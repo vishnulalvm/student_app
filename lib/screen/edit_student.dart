@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
 
@@ -11,6 +14,7 @@ class EditStudent extends StatefulWidget {
 }
 
 class _EditStudentState extends State<EditStudent> {
+  String? pickedImage='image';
   final _userNameController = TextEditingController();
   final _userContactController = TextEditingController();
   final _userDescriptionController = TextEditingController();
@@ -49,6 +53,24 @@ class _EditStudentState extends State<EditStudent> {
               ),
               const SizedBox(
                 height: 20.0,
+              ),
+              Center(
+                child: Stack(
+                  children: [
+                     CircleAvatar(
+                      radius: 60,
+                     backgroundImage: FileImage(File(widget.studentModel.imagepath)),
+                    ),
+                    Positioned(
+                        left: 0,
+                        bottom: 0,
+                        child: IconButton(
+                            onPressed: () async {
+                              pickedImage = await pickImage();
+                            },
+                            icon: const Icon(Icons.add))),
+                  ],
+                ),
               ),
               TextField(
                   controller: _userNameController,
@@ -121,7 +143,6 @@ class _EditStudentState extends State<EditStudent> {
                           Navigator.of(context).pop();
                         }
                       });
-                      
                     },
                     child: const Text('Udate Details'),
                   ),
@@ -150,12 +171,24 @@ class _EditStudentState extends State<EditStudent> {
     );
   }
 
+  Future<String?> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      return pickedFile.path;
+    }if(pickedFile ==null){
+    return 'image not piced';
+  }
+    return null;
+  }
+
   updateDetails(BuildContext context) async {
     final student = StudentModel(
-      id: widget.studentModel.id,
+        id: widget.studentModel.id,
         name: _userNameController.text,
         contact: _userContactController.text,
-        description: _userDescriptionController.text);
+        description: _userDescriptionController.text,
+        imagepath: pickedImage!);
     await StudentRepo.updateDetails(studentModel: student);
     StudentRepo.updateStudentList();
   }

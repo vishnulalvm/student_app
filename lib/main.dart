@@ -5,6 +5,7 @@ import 'package:student_app/screen/home_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {

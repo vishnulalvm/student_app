@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
@@ -27,7 +29,11 @@ class _StudentListState extends State<StudentList> {
           ),
         ));
       },
-      leading: const Icon(Icons.person),
+      leading: CircleAvatar(
+            radius: 30,
+            backgroundImage: FileImage(File(widget.studentModel.imagepath)),
+          ),
+
       title: Text(widget.studentModel.name),
       subtitle: Text(widget.studentModel.contact),
       trailing: Row(

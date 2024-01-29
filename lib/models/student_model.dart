@@ -5,11 +5,14 @@ class StudentModel {
   String name;
   String contact;
   String description;
+  String imagepath;
+
 
   StudentModel({this.id,
   required this.name,
   required this.contact,
   required this.description,
+  required this.imagepath,
   
    });
 //converting class model to a map
@@ -18,6 +21,7 @@ class StudentModel {
       'name': name,
       'contact': contact,
       'description': description,
+      'imagepath': imagepath,
     };
   }
 

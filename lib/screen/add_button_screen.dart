@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
 
 class AddButtonScreen extends StatefulWidget {
-  const AddButtonScreen({super.key});
+  const AddButtonScreen({
+    super.key,
+  });
 
   @override
   State<AddButtonScreen> createState() => _AddButtonScreenState();
 }
 
 class _AddButtonScreenState extends State<AddButtonScreen> {
+  String? pickedImage = 'image';
   final _userNameController = TextEditingController();
   final _userContactController = TextEditingController();
   final _userDescriptionController = TextEditingController();
@@ -35,6 +39,24 @@ class _AddButtonScreenState extends State<AddButtonScreen> {
                     color: Colors.teal,
                     fontWeight: FontWeight.w500),
               ),
+              const SizedBox(
+                height: 20.0,
+              ),
+
+              ElevatedButton.icon(
+                label: const Text('Add a image'),
+                onPressed: () async {
+                  pickedImage = await pickImage();
+                  setState(() {});
+                },
+                icon: pickedImage == 'image'
+                    ? const Icon(
+                        Icons.add,
+                        size: 30,
+                      )
+                    : const Icon(Icons.check),
+              ),
+
               const SizedBox(
                 height: 20.0,
               ),
@@ -106,12 +128,8 @@ class _AddButtonScreenState extends State<AddButtonScreen> {
                           _validateDescription == false) {
                         insertStudent();
                         showSnackBar();
-                         Navigator.of(context).pop();
-                        
+                        Navigator.of(context).pop();
                       }
-                     
-
-                      
                     },
                     child: const Text('Save Details'),
                   ),
@@ -140,13 +158,28 @@ class _AddButtonScreenState extends State<AddButtonScreen> {
     );
   }
 
+  Future<String?> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      return pickedFile.path;
+    }
+    if (pickedFile == null) {
+      return 'image not piced';
+    }
+    return null;
+  }
+
   //here is the value passing from textfield to database
 
   insertStudent() async {
     final student = StudentModel(
         name: _userNameController.text,
         contact: _userContactController.text,
-        description: _userDescriptionController.text);
+        description: _userDescriptionController.text,
+        imagepath: pickedImage!);
+
     await StudentRepo.insert(studentModel: student);
     StudentRepo.updateStudentList();
   }

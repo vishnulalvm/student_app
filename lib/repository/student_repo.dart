@@ -16,7 +16,7 @@ class StudentRepo {
       join(await getDatabasesPath(), _dbName),
       onCreate: (db, version) {
         return db.execute(
-      'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, name TEXT, contact TEXT, description TEXT)',
+      'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, name TEXT, contact TEXT, description TEXT, imagepath TEXT)',
     );
       },
       version: 1,
@@ -36,13 +36,14 @@ class StudentRepo {
 //convert the map from database to list student
   static Future<List<StudentModel>> getStudentDetails() async {
     final db = await _database();
-    final List<Map<String, dynamic>> maps = await db.query(_tableName);
+    final List<Map<String, dynamic>> maps = await db.query(_tableName,limit: 100,offset: 0);
     return List.generate(maps.length, (i) {
       return StudentModel(
         id: maps[i]['id'] as int,
         name: maps[i]['name'] as String,
         contact: maps[i]['contact'] as String,
         description: maps[i]['description'] as String,
+        imagepath: maps[i]['imagepath'] as String,
         
       );
       
