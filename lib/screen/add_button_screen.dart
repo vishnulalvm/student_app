@@ -52,7 +52,7 @@ class _AddButtonScreenState extends State<AddButtonScreen> {
                 icon: pickedImage == 'image'
                     ? const Icon(
                         Icons.add,
-                        size: 30,
+                        size: 35,
                       )
                     : const Icon(Icons.check),
               ),
