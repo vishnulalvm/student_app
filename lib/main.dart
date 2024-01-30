@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/repository/student_repo.dart';
-import 'package:student_app/screen/home_page.dart';
+import 'package:student_app/screen/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const LoginPage(),
+       routes: {
+        'login': (context) => const LoginPage(),
+       },
     );
   }
 }

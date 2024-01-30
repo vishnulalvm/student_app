@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:student_app/models/student_model.dart';
 
@@ -23,6 +25,7 @@ class _ViewStudentState extends State<ViewStudent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               const Text(
                 "Full Details",
                 style: TextStyle(
@@ -30,6 +33,11 @@ class _ViewStudentState extends State<ViewStudent> {
                     color: Colors.blueGrey,
                     fontSize: 20),
               ),
+
+              CircleAvatar(
+                      radius: 60,
+                     backgroundImage: FileImage(File(widget.studentModel.imagepath)),
+                    ),
               const SizedBox(
                 height: 20,
               ),
