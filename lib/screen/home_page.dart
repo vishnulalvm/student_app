@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
 import 'package:student_app/screen/add_button_screen.dart';
-
+import 'package:student_app/widget/grid_view.dart';
+import 'package:student_app/widget/search.dart';
 import 'package:student_app/widget/student_list.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -14,44 +15,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool gridview =false;
+  bool gridview = true;
   Icon customIcon = const Icon(Icons.search);
   Widget cusText = const Text('Friends List');
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    List<StudentModel> studntList = StudentRepo.studntListNotifier.value;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: cusText,
         actions: [
           IconButton(
-            onPressed: () {
-              setState(() {
-                if (customIcon.icon == Icons.search) {
-                  customIcon = const Icon(Icons.cancel);
-                  cusText = const TextField(
-                    textInputAction: TextInputAction.go,
-                    decoration: InputDecoration(
-                      hintText: 'Search Student',
-                      suffixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      fillColor: Colors.white, // Sets the background color
-                      filled: true, // Enables background color filling
-                    ),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
+            icon: const Icon(Icons.search),
+            onPressed: () async {
+              // Display the search bar
+              StudentModel? selectedStudent = await showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(studntList),
+              );
 
-                    //create a search feature when enter value in input field find the student form the  list
-                  );
-                } else {
-                  customIcon = const Icon(Icons.search);
-                  cusText = const Text('Student List');
-                }
-              });
+              // Handle the selected student (if needed)
+              if (selectedStudent != null) {
+                // Do something with the selected student
+              }
             },
-            icon: customIcon,
           ),
           PopupMenuButton(
             itemBuilder: (ctx) {
@@ -115,20 +104,67 @@ class _MyHomePageState extends State<MyHomePage> {
         valueListenable: StudentRepo.studntListNotifier,
         builder:
             (BuildContext ctx, List<StudentModel> studntList, Widget? child) {
-          return ListView(
-            children:[ 
-              ListView.builder(
-                itemCount: studntList.length,
-                itemBuilder: (context, index) {
-                  final data = studntList[index];
-                  return  StudentList(
-                    studentModel: data,
-                  );
-                },
+          final newfilteredList =
+              filterList(_searchController.text, studntList);
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total Students : ${newfilteredList.length}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      
+                        onPressed: () {
+                          setState(() {
+                            gridview == true
+                                ? gridview = false
+                                : gridview = true;
+                          });
+                        },
+                        
+                        icon: gridview ==true ? const Icon(Icons.grid_3x3,size: 30,): const Icon(Icons.list,size: 30,)
+                        ),
+                  ],
                 ),
-                ],
+              ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              Expanded(
+                  child: gridview
+                      ? ListView.builder(
+                          itemCount: newfilteredList.length,
+                          itemBuilder: (context, index) {
+                            final data = newfilteredList[index];
+                            return StudentList(
+                              studentModel: data,
+                            );
+                          },
+                        )
+                      : GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 8),
+                          itemCount: newfilteredList.length,
+                          itemBuilder: (context, index) {
+                            final data = newfilteredList[index];
+                            return GridViewList(
+                              studentModel: data,
+                            );
+                          },
+                        )),
+            ],
           );
-          
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -144,5 +180,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       //
     );
+  }
+
+  List<StudentModel> filterList(
+      String searchText, List<StudentModel> inputList) {
+    if (searchText.isEmpty) {
+      return inputList;
+    }
+    return inputList
+        .where((student) =>
+            student.name.toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
   }
 }

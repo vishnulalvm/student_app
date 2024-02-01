@@ -14,7 +14,7 @@ class EditStudent extends StatefulWidget {
 }
 
 class _EditStudentState extends State<EditStudent> {
-  String? pickedImage='image';
+  String? pickedImage = 'image';
   final _userNameController = TextEditingController();
   final _userContactController = TextEditingController();
   final _userDescriptionController = TextEditingController();
@@ -57,20 +57,37 @@ class _EditStudentState extends State<EditStudent> {
               Center(
                 child: Stack(
                   children: [
-                     CircleAvatar(
+                    CircleAvatar(
                       radius: 60,
-                     backgroundImage: FileImage(File(widget.studentModel.imagepath)),
+                      backgroundImage:
+                          FileImage(File(widget.studentModel.imagepath)),
                     ),
                     Positioned(
                         left: 0,
                         bottom: 0,
-                        child: IconButton(
-                            onPressed: () async {
-                              pickedImage = await pickImage();
-                            },
-                            icon: const Icon(Icons.add))),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                         
+                          decoration:  BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(40)),
+                            color: Colors.grey[200],
+                          ),
+                          child: IconButton(
+                              onPressed: () async {
+                                pickedImage = await pickImage();
+                              },
+                              icon: const Icon(
+                                
+                                Icons.add,
+                                size: 30,
+                              )),
+                        )),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               TextField(
                   controller: _userNameController,
@@ -176,9 +193,10 @@ class _EditStudentState extends State<EditStudent> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       return pickedFile.path;
-    }if(pickedFile ==null){
-    return 'image not piced';
-  }
+    }
+    if (pickedFile == null) {
+      return 'image not piced';
+    }
     return null;
   }
 
