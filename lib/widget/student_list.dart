@@ -80,7 +80,7 @@ class _StudentListState extends State<StudentList> {
       ),
     );
   }
-
+ 
   deleteStudent(BuildContext context) async {
     await StudentRepo.deleteStudent(studentModel: widget.studentModel)
         .then((e) {});
@@ -91,4 +91,6 @@ class _StudentListState extends State<StudentList> {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Student deleated')));
   }
+
+  
 }

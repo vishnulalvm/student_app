@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
 import 'package:student_app/screen/add_button_screen.dart';
+
 import 'package:student_app/widget/student_list.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -13,6 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool gridview =false;
   Icon customIcon = const Icon(Icons.search);
   Widget cusText = const Text('Friends List');
   @override
@@ -25,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             onPressed: () {
               setState(() {
-
                 if (customIcon.icon == Icons.search) {
                   customIcon = const Icon(Icons.cancel);
                   cusText = const TextField(
@@ -41,14 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.black,
                       fontSize: 16,
                     ),
-                    
+
+                    //create a search feature when enter value in input field find the student form the  list
                   );
                 } else {
                   customIcon = const Icon(Icons.search);
                   cusText = const Text('Student List');
                 }
               });
-
             },
             icon: customIcon,
           ),
@@ -114,14 +115,20 @@ class _MyHomePageState extends State<MyHomePage> {
         valueListenable: StudentRepo.studntListNotifier,
         builder:
             (BuildContext ctx, List<StudentModel> studntList, Widget? child) {
-          return ListView.builder(
-              itemCount: studntList.length,
-              itemBuilder: (context, index) {
-                final data = studntList[index];
-                return StudentList(
-                  studentModel: data,
-                );
-              });
+          return ListView(
+            children:[ 
+              ListView.builder(
+                itemCount: studntList.length,
+                itemBuilder: (context, index) {
+                  final data = studntList[index];
+                  return  StudentList(
+                    studentModel: data,
+                  );
+                },
+                ),
+                ],
+          );
+          
         },
       ),
       floatingActionButton: FloatingActionButton(

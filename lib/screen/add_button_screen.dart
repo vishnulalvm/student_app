@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_app/models/student_model.dart';
@@ -40,6 +42,15 @@ class _AddButtonScreenState extends State<AddButtonScreen> {
                     fontWeight: FontWeight.w500),
               ),
               const SizedBox(
+                height: 20.0,
+              ),
+
+              CircleAvatar(
+                radius: 60,
+                //set the background image from fileimage student model.imagepath
+                backgroundImage: FileImage(File(pickedImage!)),
+              ),
+               const SizedBox(
                 height: 20.0,
               ),
 
