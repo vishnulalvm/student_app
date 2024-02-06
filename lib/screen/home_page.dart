@@ -17,7 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool gridview = true;
   Icon customIcon = const Icon(Icons.search);
-  Widget cusText = const Text('Friends List');
+  Widget cusText = const Text('Student List');
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:student_app/models/student_model.dart'; // Import your StudentModel
+import 'package:student_app/models/student_model.dart';
+import 'package:student_app/repository/student_repo.dart';
+import 'package:student_app/screen/view_student.dart'; // Import your StudentModel
 
 class CustomSearchDelegate extends SearchDelegate<StudentModel> {
   final List<StudentModel> studentList; // Your list of students
@@ -25,7 +27,7 @@ class CustomSearchDelegate extends SearchDelegate<StudentModel> {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-       Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
   }
@@ -38,20 +40,49 @@ class CustomSearchDelegate extends SearchDelegate<StudentModel> {
             student.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
-    return 
-    
-    ListView.builder(
+    return ListView.builder(
       itemCount: searchResults.length,
       itemBuilder: (context, index) {
         final data = searchResults[index];
         return ListTile(
-          onTap: (){
-            
+          trailing: 
+           IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: const Text('Are you sure want to delete?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('No')),
+                            TextButton(
+                                onPressed: () {
+                                  deleteStudent(context,data);
+                                  Navigator.pop(context);
+                                 
+                                },
+                                child: const Text('Yes'))
+                          ],
+                        ));
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              )),
+        
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => ViewStudent(studentModel: data)));
           },
-           leading: CircleAvatar(
+          
+          leading: CircleAvatar(
             radius: 30,
             backgroundImage: FileImage(File(data.imagepath)),
           ),
+          
           subtitle: Text(data.contact),
           title: Text(data.name),
           // Implement your UI for the search results here
@@ -72,10 +103,11 @@ class CustomSearchDelegate extends SearchDelegate<StudentModel> {
       itemBuilder: (context, index) {
         final data = searchResults[index];
         return ListTile(
-          onTap: (){
-            
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctx) => ViewStudent(studentModel: data)));
           },
-           leading: CircleAvatar(
+          leading: CircleAvatar(
             radius: 30,
             backgroundImage: FileImage(File(data.imagepath)),
           ),
@@ -85,5 +117,11 @@ class CustomSearchDelegate extends SearchDelegate<StudentModel> {
         );
       },
     ); // You can customize this based on your needs
+  }
+
+   deleteStudent(BuildContext context ,StudentModel studentModel) async {
+    await StudentRepo.deleteStudent(studentModel:studentModel)
+        .then((e) {});
+    StudentRepo.updateStudentList();
   }
 }

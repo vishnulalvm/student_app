@@ -30,10 +30,9 @@ class _StudentListState extends State<StudentList> {
         ));
       },
       leading: CircleAvatar(
-            radius: 30,
-            backgroundImage: FileImage(File(widget.studentModel.imagepath)),
-          ),
-
+        radius: 30,
+        backgroundImage: FileImage(File(widget.studentModel.imagepath)),
+      ),
       title: Text(widget.studentModel.name),
       subtitle: Text(widget.studentModel.contact),
       trailing: Row(
@@ -64,9 +63,11 @@ class _StudentListState extends State<StudentList> {
                                 child: const Text('No')),
                             TextButton(
                                 onPressed: () {
-                                  deleteStudent(context);
-                                  showSnackBar();
-                                  Navigator.pop(context);
+                                  setState(() {
+                                    deleteStudent(context);
+                                    showSnackBar();
+                                    Navigator.pop(context);
+                                  });
                                 },
                                 child: const Text('Yes'))
                           ],
@@ -80,7 +81,7 @@ class _StudentListState extends State<StudentList> {
       ),
     );
   }
- 
+
   deleteStudent(BuildContext context) async {
     await StudentRepo.deleteStudent(studentModel: widget.studentModel)
         .then((e) {});
@@ -91,6 +92,4 @@ class _StudentListState extends State<StudentList> {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Student deleated')));
   }
-
-  
 }

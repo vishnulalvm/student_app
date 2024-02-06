@@ -16,95 +16,96 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    
+   
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Now'),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-        ],
-      ),
       body: SafeArea(
         
-          child: Padding(
-            
-        padding: const EdgeInsets.only(right: 20, left: 20, top: 150),
-        child: Form(
-          key: formkey,
-          child: Column(
-            
-            children: [
-              const Text(
-                'User Login',
-                style: TextStyle(fontSize: 30),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter User Name';
-                  } else {
-                    return null;
-                  }
-                },
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'User Name',
+          child: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: NetworkImage('https://i.pinimg.com/564x/27/9d/71/279d719680b46b7d4b9cc7648759f87f.jpg'),fit:BoxFit.cover )
+            ),
+            child: Padding(
+              
+                    padding: const EdgeInsets.only(right: 20, left: 20, top: 150),
+                    child: Form(
+            key: formkey,
+            child: Column(
+              
+              children: [
+                const Text(
+                  'User Login',
+                  style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 254, 250, 255)),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter Password';
-                  } else {
-                    return null;
-                  }
-                },
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), hintText: 'Password'),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        signup();
-                      },
-                      child: const Text('Sign up'),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
+                const SizedBox(
+                  height: 40,
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter User Name';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'User Name',
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Password';
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), hintText: 'Password'),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                SizedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
                         onPressed: () {
-                          if (formkey.currentState!.validate()) {
-                            checkLogin(context);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('Enter your name and password')));
-                          }
+                          signup();
                         },
-                        child: const Text("Login"))
-                  ],
+                        child: const Text('Sign up'),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            if (formkey.currentState!.validate()) {
+                              checkLogin(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Enter your name and password')));
+                            }
+                          },
+                          child: const Text("Login"))
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      )),
+              ],
+            ),
+                    ),
+                  ),
+          )),
     );
   }
 
