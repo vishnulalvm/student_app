@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_app/main.dart';
 import 'package:student_app/screen/home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
     final username = usernameController.text;
     final password = passwordController.text;
 
-    if (savedusername == username && savedpassword == password) {
+    if (savedusername == username && savedpassword == password) {    
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext ctx) =>  const MyHomePage()));
     } else {
@@ -134,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
     final sharedpref = await SharedPreferences.getInstance();
     await sharedpref.setString('username', usernameController.text);
     await sharedpref.setString('password', passwordController.text);
+    await sharedpref.setBool(saveKeyName, true);
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

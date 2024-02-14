@@ -16,7 +16,7 @@ class StudentRepo {
       join(await getDatabasesPath(), _dbName),
       onCreate: (db, version) {
         return db.execute(
-      'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, name TEXT, contact TEXT, description TEXT, imagepath TEXT)',
+      'CREATE TABLE $_tableName(id INTEGER PRIMARY KEY, name TEXT, contact TEXT, description TEXT, imagepath TEXT,)',
     );
       },
       version: 1,

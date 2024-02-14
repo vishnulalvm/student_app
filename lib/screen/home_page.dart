@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_app/main.dart';
 import 'package:student_app/models/student_model.dart';
 import 'package:student_app/repository/student_repo.dart';
 import 'package:student_app/screen/add_button_screen.dart';
@@ -81,7 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         content: const Text('Are you sure you want to logout?'),
                         actions: [
                           TextButton(
-                              onPressed: () {
+                              onPressed: () async{
+                                final sharedpref = await SharedPreferences.getInstance();
+                                await sharedpref.setBool(saveKeyName, false);
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     'login', (route) => false);
                               },

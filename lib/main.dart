@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/repository/student_repo.dart';
 import 'package:student_app/screen/login_page.dart';
+import 'package:student_app/screen/spalsh_screen.dart';
+const saveKeyName = 'UserLogin';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
   
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -22,10 +25,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: const SplashScreen(),
        routes: {
         'login': (context) => const LoginPage(),
        },
     );
   }
+
 }
